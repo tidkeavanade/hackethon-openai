@@ -1,0 +1,7 @@
+{
+    "/api": {
+        "target": "https://tidkeavanade-cautious-parakeet-6665q9x4rv6fwr9-5160.preview.app.github.dev/",
+        "secure": false,
+        "changeOrigin": true
+    }
+}

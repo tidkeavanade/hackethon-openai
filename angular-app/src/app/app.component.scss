@@ -1,0 +1,26 @@
+::ng-deep {
+    .p-button {
+     background: rgb(212 212 216);
+     background-color: rgb(212 212 216);
+     border: none;
+   }
+}
+
+ .concept[data-concept="Cultural Context"] {
+   background-color: #FFFF00;
+}
+.concept[data-concept="Legal Practices"] {
+   background-color: #FFA500;
+}
+.concept[data-concept="Language Style"] {
+   background-color: #00FF00;
+}
+.concept[data-concept="Terminology"] {
+   background-color: #ADD8E6;
+}
+.concept[data-concept="Formatting and Structure"] {
+   background-color: #FFB6C1;
+}
+.concept[data-concept="Legal References and Citations"] {
+   background-color: #D8BFD8;
+}

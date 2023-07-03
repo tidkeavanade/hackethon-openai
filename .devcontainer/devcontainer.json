@@ -1,0 +1,6 @@
+{
+    "name": "Angular + .NET 8",
+    "dockerFile": "Dockerfile",
+    "forwardPorts": [4200, 5000, 5001],
+    "postCreateCommand": "echo 'Environment setup complete.'"
+  }

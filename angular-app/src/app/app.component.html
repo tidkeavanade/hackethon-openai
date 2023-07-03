@@ -1,0 +1,233 @@
+<div class="flex flex-col h-screen">
+    <!-- Top bar -->
+    <div class="flex items-center justify-center bg-gray-100 p-1">
+      <img src="../assets/images/ms-accenture-avanade.png" alt="Roche Logo" class="h-16 w-auto">
+    </div>
+    <div class="flex-grow bg-white p-4">
+        <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200">
+          <ul class="flex flex-wrap -mb-px">
+            <li class="mr-2">
+              <span class="inline-block p-4 cursor-pointer" [ngClass]="{
+                  'text-blue-600 border-b-2 border-blue-600': openTab==1,
+                  'border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300': openTab !=1
+                }" (click)="toggleTabs(1)">Localize Text</span>
+            </li>
+            <li class="mr-2">
+              <span class="inline-block p-4 cursor-pointer" [ngClass]="{
+                'text-blue-600 border-b-2 border-blue-600': openTab==2,
+                'border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300': openTab !=2
+              }" (click)="toggleTabs(2)">Localize Images</span>
+            </li>
+            <li class="mr-2">
+              <span class="inline-block p-4 cursor-pointer" [ngClass]="{
+                'text-blue-600 border-b-2 border-blue-600': openTab==2,
+                'border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300': openTab !=2
+              }" (click)="toggleTabs(3)">Uncovering abstract aspects of Translations</span>
+            </li>
+          </ul>
+        </div>
+      <div class="flex flex-col items-center h-full justify-center bg-gray-100 pb-4">
+  
+        <ng-container *ngIf="openTab==1">
+  
+          <div class="flex justify-center space-x-4 w-full h-full"> <!-- Added space-x-4 for space between columns -->
+  
+            <div class="w-1/3 bg-zinc-100 p-4 space-y-2">
+              <!-- ... other dropdowns ... -->
+  
+              <div class="flex flex-col space-y-4 my-2">
+  
+                <div class="w-full">
+                  <p-autoComplete [(ngModel)]="targetLanguage" [suggestions]="filteredTargetLanguages"
+                    (completeMethod)="filterItems('targetLanguages', $event)" [dropdown]="true" class="bg-red-200">
+                  </p-autoComplete>
+                </div>
+                <div class="w-full">
+                  <p-autoComplete [(ngModel)]="targetVoiceTone" [suggestions]="filteredTargetVoiceToneOptions"
+                    (completeMethod)="filterItems('targetVoiceToneOptions', $event)" [dropdown]="true">
+                  </p-autoComplete>
+                </div>
+                <div class="w-full">
+                  <p-autoComplete [(ngModel)]="targetWritingStyle" [suggestions]="filteredTargetWritingStyleOptions"
+                    (completeMethod)="filterItems('targetWritingStyleOptions', $event)" [dropdown]="true">
+                  </p-autoComplete>
+                </div>
+                <div class="w-full">
+                  <p-autoComplete [(ngModel)]="targetFormatOption" [suggestions]="filteredTargetFormatOptions"
+                    (completeMethod)="filterItems('targetFormatOptions', $event)" [dropdown]="true">
+                  </p-autoComplete>
+                </div>
+  
+  
+                <div class="w-full flex space-x-2"> <!-- Added w-full and space-x-2 for space between buttons -->
+                  <button (click)="invokeRequestToOpenAI()"
+                    class="w-full bg-zinc-300 text-black py-2 px-4 rounded">Localize</button>
+                 
+                </div>
+              </div>
+            </div>
+  
+            <div class="w-2/3 bg-gray-300 p-4 h-full flex flex-col space-y-2">
+              <textarea [(ngModel)]="inputTextToBeTranslated"
+                class="w-full h-full py-2 px-4 border border-gray-300 rounded mb-2"></textarea>
+                <textarea [(ngModel)]="responseText"
+                class="w-full h-full py-2 px-4 border border-gray-300 rounded mb-2"></textarea>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="openTab==2">
+          <div class="flex justify-center space-x-4 w-full h-full">
+          <div class="w-1/3 bg-zinc-100 p-4 space-y-2">
+          <textarea [(ngModel)]="inputTextForPicture"
+            class="w-full py-2 px-4 border border-gray-300 rounded mb-2" rows="15"></textarea>
+  
+            <button (click)="invokeRequestToOpenAIImage()"
+            class="w-full bg-zinc-300 text-black py-2 px-4 rounded">Generate Image</button>
+          </div>
+            <div class="w-2/3 bg-gray-300 p-4 h-full flex flex-col space-y-2">
+  
+              <ng-container *ngIf="imageLoading">
+                <div class="flex justify-center items-center h-screen">
+                  <div class="border-t-4 border-blue-500 rounded-full animate-spin h-12 w-12"></div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="!imageLoading">
+  
+              <ng-container *ngIf="!imageDataFromUrl">
+                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="w-4/5 h-4/5 object-cover bg-gray-500 mb-4">
+              </ng-container>
+              <ng-container *ngIf="imageDataFromUrl">
+                <img [src]="imageDataFromUrl" alt="Gen AI Image" class="w-4/5 h-4/5 object-cover mb-4">
+              </ng-container>
+              </ng-container>
+              </div>
+          </div>
+  </ng-container>
+  
+  <ng-container *ngIf="openTab==3">
+  
+    <div class="w-1/2 bg-zinc-100 p-4 space-y-2">
+  
+      <div class="flex flex-col space-y-4 my-2">
+        <div class="flex flex-col">
+          <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+              <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Abstract Concept
+                      </th>
+                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Importance Probability
+                      </th>
+                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Possible Variations
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Cultural Context
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        High
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Adaptation of idiomatic expressions, cultural references, and specific terminology
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Legal Practices
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        High
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Variations in trademark laws, registration procedures, and legal interpretations
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Language Style
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Medium
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Adjustments in formality, sentence structure, and word choice
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Terminology
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Medium
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Use of preferred or commonly used terms in the target language or legal system
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Formatting and Structure
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Low
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Changes in headings, numbering, or overall document organization
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Legal References and Citations
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Low
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        Alternative references or citations specific to the target jurisdiction
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <div class="flex flex-col space-y-4 my-2">
+        <p>
+          Roche in Rotkreuz, <span class="concept" data-concept="Terminology" pTooltip="Use of preferred or commonly used terms in the target language or legal system.">der größte private Arbeitgeber</span> im Kanton Zug, feiert im Jahr 2019 sein 50-jähriges Jubiläum. Das Motto der Feierlichkeiten lautet <span class="concept" data-concept="Cultural Context" pTooltip="Use of cultural constructs.">#StayCurious</span>. Denn es ist die <span class="concept" data-concept="Cultural Context">Neugier</span>, die das Unternehmen seit seiner Gründung im Jahr 1969 als zentralen Treiber der Innovationskraft begleitet hat: Von der Vorgängerfirma Tegimenta in Zug mit anfänglich rund 60 Mitarbeitern bis zum heutigen Roche Diagnostics International in Rotkreuz mit rund 2500 Mitarbeitern aus über 70 Nationen. Unzählige begeisterte und engagierte Menschen haben Rotkreuz in den vergangenen Jahrzehnten mit viel Ausdauer, Hingabe und Innovationsgeist geprägt - als Mitarbeiter, Lieferanten, Behörden und Geschäftspartner. 50 von ihnen stellen sich in unserer digitalen Gedenkpublikation "#StayCurious 50 Jahre - 50 Menschen" vor.
+      </p>
+      <p>
+          Der Standort entwickelte sich zu einem modernen, offenen Campus, der auch architektonisch einzigartig und in der Zentralschweiz unvergleichlich ist. Heute ist Rotkreuz ein wichtiger Standort für das <span class="concept" data-concept="Terminology">Diagnostikgeschäft</span> und vereint alle zentralen Funktionen und Geschäftsbereiche. Das Unternehmen bildet derzeit 131 Lehrlinge aus.
+      </p>
+      <p>
+          "<span class="concept" data-concept="Language Style"  pTooltip="Language Style: Adjustments in formality, sentence structure, and word choice.">Unser Standort in Rotkreuz verbindet eine lokal verwurzelte Kultur mit einer sehr internationalen Ausrichtung</span>", erklärt Annette Luther, General Manager Roche Diagnostics International Ltd. "In den vergangenen Jahrzehnten wurde der Campus von engagierten Menschen geprägt, die große Ausdauer, Engagement und Innovationsgeist gezeigt haben - ob als Mitarbeiter, Lieferanten, Behörden oder Geschäftspartner. Wir möchten ihnen dafür danken."
+      </p>
+      <p>
+          Annette Luther. Auch in Zukunft wird Rotkreuz als wichtiger globaler <span class="concept" data-concept="Terminology" pTooltip="Use of preferred or commonly used terms in the target language or legal system.">Diagnostik-Hub</span> das digitale Potenzial für eine bessere Gesundheitsversorgung weiter ausschöpfen: mit integrierten Lösungen für Patienten, Ärzte und Labore. Dabei optimieren datengetriebene Prozesse Arbeitsabläufe in Laboren und unterstützen die Entscheidungsfindung der Ärzte, um bessere Behandlungen für Patienten zu bieten.
+      </p>
+      <p>
+          Severin Schwan. Severin Schwan, CEO von Roche, würdigte die Entwicklung zum wichtigsten Diagnostikstandort in der Schweiz: "Die Diagnostik wird weiterhin an Bedeutung gewinnen zum Wohl der Patienten. In der Zukunft werden wir nicht nur Geräte und Tests anbieten, sondern zunehmend auch digitale Entscheidungsfindungshilfen. Diese werden dazu beitragen, Behandlungen gezielter und effizienter einzusetzen. Die Digitalisierung wird die personalisierte Medizin enorm beschleunigen und Rotkreuz wird sicherlich an vorderster Front dabei sein."
+      </p>
+      </div>
+    </div>
+  
+  
+  </ng-container>
+  
+  
+  
+      </div>
+    </div>
+  </div>
+  
+<router-outlet></router-outlet>
