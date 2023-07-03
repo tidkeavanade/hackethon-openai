@@ -42,28 +42,28 @@ public class ImageData
 [Route("api/[controller]")]
 public class OpenAIProxyController : ControllerBase
 {
+
+    private readonly string openAIEndpointUrl;
+    private readonly string openAIKey;
+
     private readonly ILogger<OpenAIProxyController> _logger;
-
-
 
     public OpenAIProxyController(ILogger<OpenAIProxyController> logger)
 
     {
-
+        this.openAIEndpointUrl = Environment.GetEnvironmentVariable("openAIEndpointURL");
+        this.openAIKey = Environment.GetEnvironmentVariable("openAIKey");
         _logger = logger;
-
     }
-
-
-
 
     [HttpPost(Name = "GetWeatherForecast")]
     async public Task<string> Post([FromBody] PromptModel promptModel)
     {
+        
         try
         {
-            var endpoint = new Uri("YOUR URL");
-            var credentials = new Azure.AzureKeyCredential("YOUR KEY");
+            var endpoint = new Uri(this.openAIEndpointUrl);
+            var credentials = new Azure.AzureKeyCredential(this.openAIKey);
             var openAIClient = new OpenAIClient(endpoint, credentials);
             var prompt = promptModel.Prompt;
 
@@ -85,10 +85,15 @@ public class OpenAIProxyController : ControllerBase
 [Route("api/[controller]")]
 public class GetImageController : ControllerBase
 {
+    
+    private readonly string openAIEndpointUrl;
+    private readonly string openAIKey;
 
     private readonly ILogger<OpenAIProxyController> _logger;
     public GetImageController(ILogger<OpenAIProxyController> logger)
     {
+        this.openAIEndpointUrl = Environment.GetEnvironmentVariable("openAIEndpointURL");
+        this.openAIKey = Environment.GetEnvironmentVariable("openAIKey");
         _logger = logger;
     }
 
@@ -98,8 +103,8 @@ public class GetImageController : ControllerBase
         try
         {
             var resourceName = "eastus-asghackathon";
-            var requestKey = "";// Set the request key
-            var endpoint = $"/openai/images/generations:submit?api-version=2023-06-01-preview";
+            var requestKey = this.openAIKey;
+            var endpoint = $"https://{this.openAIEndpointUrl}./openai/images/generations:submit?api-version=2023-06-01-preview";
             var submitResponse = await SubmitImageGeneration(requestKey, resourceName, promptModel.Prompt);
 
             var secondApiResponse = await GetOperationStatus(requestKey,resourceName,submitResponse.Id);

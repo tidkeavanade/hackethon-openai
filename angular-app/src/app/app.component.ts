@@ -22,13 +22,14 @@ export class AppComponent implements OnInit{
   public inputTextForPicture: string = "";
   public inputTextToBeTranslated: string = "";
   public targetLanguage?: string = "German";
-  public targetVoiceTone: string = "Passionate and Inspirational";
+  public targetVoiceTone: string = "Warehouse Manager";
+
   public targetWritingStyle: string = "Creative";
   public targetFormatOption: string = "Concise";
 
   public targetLanguages: string[] = [  'English', 'Spanish', 'French', 'German', 'Italian', 'Portuguese', 'Russian', 'Chinese', 'Japanese', 'Korean', 'Arabic', 'Dutch', 'Polish', 'Romanian', 'Turkish', 'Ukrainian', 'Bulgarian', 'Czech', 'Danish', 'Greek', 'Finnish', 'Hindi', 'Hungarian', 'Indonesian', 'Norwegian', 'Slovak', 'Swedish', 'Thai', 'Vietnamese'];
   public targetFormatOptions: string[] = ["Concise", "Corporate Jargon", "Detailed"];
-  public targetVoiceToneOptions: string[] = ["Passionate and Inspirational", "Reassuring and Calm", "Caring and Empathetic"];
+  public targetVoiceToneOptions: string[] = ["Warehouse Manager", "Procurement Manager"];
   public targetWritingStyleOptions: string[] = ["Creative", "Instructive", "Persuasive", "Narrative", "Descriptive", "Analytical"];
   
   filteredTargetLanguages: string[] = [];
@@ -69,13 +70,6 @@ export class AppComponent implements OnInit{
       }
 
   ngOnInit() {
-
-    this.http.get('/api/GetTestApi', { responseType: 'text' }).subscribe(
-      data => { console.log(data); this.responseText = data; },
-      error => { console.error('Error:', error); }
-    );
-    
-
     
     
   }
@@ -83,7 +77,7 @@ export class AppComponent implements OnInit{
 
   public invokeRequestToOpenAI() {
     
-    this.http.post('/api/weatherforecast', { Prompt: this.getBasePrompt() }, { responseType: 'text' }).subscribe(
+    this.http.post('/api/openaiproxy', { Prompt: this.getBasePrompt() }, { responseType: 'text' }).subscribe(
       data => { console.log(data); this.responseText = data; },
       error => { console.error('Error:', error); }
     );
@@ -171,7 +165,7 @@ getBasePrompt(): string {
   
       Target Language: ${this.targetLanguage}
   
-      Target Voice Tone: ${this.targetVoiceTone}
+      Target Voice Tone suited for a : ${this.targetVoiceTone}
   
       Target Writing Style: ${this.targetWritingStyle}
   

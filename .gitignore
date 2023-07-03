@@ -1,5 +1,8 @@
 dotnet-api/bin/
 dotnet-api/obj/
+angular-app/.angular/
+angular-app/package-lock.json
+
 
 # Logs
 logs
