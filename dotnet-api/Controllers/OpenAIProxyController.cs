@@ -87,13 +87,13 @@ public class GetImageController : ControllerBase
 {
     
     private readonly string openAIEndpointUrl;
-    private readonly string openAIKey;
+    private readonly string openAIKeyEast;
 
     private readonly ILogger<OpenAIProxyController> _logger;
     public GetImageController(ILogger<OpenAIProxyController> logger)
     {
         this.openAIEndpointUrl = Environment.GetEnvironmentVariable("openAIEndpointURL");
-        this.openAIKey = Environment.GetEnvironmentVariable("openAIKey");
+        this.openAIKeyEast = Environment.GetEnvironmentVariable("openAIKeyEast");
         _logger = logger;
     }
 
@@ -103,8 +103,8 @@ public class GetImageController : ControllerBase
         try
         {
             var resourceName = "eastus-asghackathon";
-            var requestKey = this.openAIKey;
-            var endpoint = $"https://{this.openAIEndpointUrl}./openai/images/generations:submit?api-version=2023-06-01-preview";
+            var requestKey = this.openAIKeyEast;
+            var endpoint = $"https://eastus-asghackathon.openai.azure.com/openai/images/generations:submit?api-version=2023-06-01-preview";
             var submitResponse = await SubmitImageGeneration(requestKey, resourceName, promptModel.Prompt);
 
             var secondApiResponse = await GetOperationStatus(requestKey,resourceName,submitResponse.Id);
