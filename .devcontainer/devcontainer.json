@@ -2,5 +2,18 @@
     "name": "Angular + .NET 8",
     "dockerFile": "Dockerfile",
     "forwardPorts": [4200, 5000, 5001],
-    "postCreateCommand": "echo 'Environment setup complete.'"
+    "updateContentCommand": "cd angular-app && npm install && npm install @angular-builders/custom-webpack --save-dev",
+    "postAttachCommand": "cd angular-app && npm run dev",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "github.github-vscode-theme",
+          "github.copilot",
+          "eamodio.gitlens",
+          "ms-dotnettools.csharp",
+          "ms-vscode.vscode-typescript-tslint-plugin",
+          "bradlc.vscode-tailwindcss"
+      ]
+      }
   }
+}
