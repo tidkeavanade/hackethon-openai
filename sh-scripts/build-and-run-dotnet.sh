@@ -8,4 +8,4 @@ echo "The second parameter is: $3"
 cd dotnet-api
 
 # Not to store the keys locally
-openAIEndpointURL=$1 openAIKey=$2 openAIKeyEast=$3 dotnet run
+openAIEndpointURL=$2 openAIKey=$1 openAIKeyEast=$3 dotnet run
