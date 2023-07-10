@@ -2,8 +2,7 @@
     "name": "Angular + .NET 8",
     "dockerFile": "Dockerfile",
     "forwardPorts": [4200, 5000, 5001],
-    "updateContentCommand": "cd angular-app && npm install && npm install @angular-builders/custom-webpack --save-dev",
-    "postAttachCommand": "/bin/bash ./.devcontainer/initCommands.sh",
+    "postCreateCommand": "sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0 && sudo apt-add-repository https://cli.github.com/packages && sudo apt update && sudo apt install gh",
     "customizations": {
       "vscode": {
         "extensions": [

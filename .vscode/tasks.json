@@ -2,6 +2,37 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Build DotNet API and Run it",
+            "type": "shell",
+            "command": "./sh-scripts/build-and-run-dotnet.sh ${input:openAIKey} ${input:openAIVisionUrl} ${input:openAIVisionKey}",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Build Angular Frontend and Run it",
+            "type": "shell",
+            "command": "./sh-scripts/build-and-run-angular.sh",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Make port public",
+            "type": "shell",
+            "command": "./sh-scripts/make-port-public.sh",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Run Hackethon",
+            "dependsOn": ["Build DotNet API and Run it", "Build Angular Frontend and Run it", "Make port public"]
+        },
+        {
             "label": "build",
             "command": "dotnet",
             "type": "process",
@@ -37,5 +68,26 @@
             ],
             "problemMatcher": "$msCompile"
         }
+    ],
+    "inputs": [
+        {
+            "id": "openAIKey",
+            "description": "openAIKey:",
+            "default": "Hello",
+            "type": "promptString"
+        },
+        {
+            "id": "openAIVisionUrl",
+            "description": "openAIVisionUrl:",
+            "default": "Hello",
+            "type": "promptString"
+        },
+        {
+            "id": "openAIVisionKey",
+            "description": "openAIVisionKey:",
+            "default": "Hello",
+            "type": "promptString"
+        },
     ]
+
 }
