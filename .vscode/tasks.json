@@ -4,7 +4,7 @@
         {
             "label": "Build DotNet API and Run it",
             "type": "shell",
-            "command": "./sh-scripts/build-and-run-dotnet.sh ${input:openAIKey} ${input:openAIVisionUrl} ${input:openAIVisionKey}",
+            "command": "chmod -R +x ./sh-scripts && ./sh-scripts/build-and-run-dotnet.sh ${input:openAIKey} ${input:openAIVisionUrl} ${input:openAIVisionKey}",
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
@@ -13,7 +13,7 @@
         {
             "label": "Build Angular Frontend and Run it",
             "type": "shell",
-            "command": "./sh-scripts/build-and-run-angular.sh",
+            "command": "chmod -R +x ./sh-scripts && ./sh-scripts/build-and-run-angular.sh",
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
@@ -22,7 +22,7 @@
         {
             "label": "Make port public",
             "type": "shell",
-            "command": "./sh-scripts/make-port-public.sh",
+            "command": "chmod -R +x ./sh-scripts && ./sh-scripts/make-port-public.sh",
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
