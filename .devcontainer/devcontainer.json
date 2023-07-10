@@ -3,7 +3,7 @@
     "dockerFile": "Dockerfile",
     "forwardPorts": [4200, 5000, 5001],
     "updateContentCommand": "cd angular-app && npm install && npm install @angular-builders/custom-webpack --save-dev",
-    "postAttachCommand": "cd angular-app && npm start",
+    "postAttachCommand": "/bin/bash ./.devcontainer/initCommands.sh",
     "customizations": {
       "vscode": {
         "extensions": [
