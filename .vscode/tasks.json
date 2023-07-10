@@ -20,15 +20,6 @@
             }
         },
         {
-            "label": "Make port public",
-            "type": "shell",
-            "command": "chmod -R +x ./sh-scripts && ./sh-scripts/make-port-public.sh",
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            }
-        },
-        {
             "label": "Run Hackethon",
             "dependsOn": ["Build DotNet API and Run it", "Build Angular Frontend and Run it", "Make port public"]
         },
