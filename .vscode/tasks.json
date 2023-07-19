@@ -20,10 +20,6 @@
             }
         },
         {
-            "label": "Run Hackethon",
-            "dependsOn": ["Build DotNet API and Run it", "Build Angular Frontend and Run it", "Make port public"]
-        },
-        {
             "label": "build",
             "command": "dotnet",
             "type": "process",
